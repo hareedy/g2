@@ -150,8 +150,8 @@ static Pin<kSPI0_SCKPinNumber>  spi_sck_pin(kInput);
 static OutputPin<kKinen_SyncPinNumber> kinen_sync_pin;
 
 static OutputPin<kGRBL_ResetPinNumber> grbl_reset_pin;
-static OutputPin<kGRBL_FeedHoldPinNumber> grbl_feedhold_pin;
-static OutputPin<kGRBL_CycleStartPinNumber> grbl_cycle_start_pin;
+static OutputPin<kGRBL_FeedHoldPinNumber> feedhold_pin;
+static OutputPin<kGRBL_CycleStartPinNumber> cycle_start_pin;
 
 static OutputPin<kGRBL_CommonEnablePinNumber> motor_common_enable_pin;
 static OutputPin<kSpindle_EnablePinNumber> spindle_enable_pin;

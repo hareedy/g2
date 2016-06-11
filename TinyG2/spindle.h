@@ -92,6 +92,7 @@ extern cmSpindleton_t spindle;
 
 void spindle_init();
 void spindle_reset();
+void grbl_stats_out();
 stat_t cm_set_spindle_speed(float speed);			    // S parameter
 stat_t cm_spindle_control(uint8_t control);             // M3, M4, M5 integrated spindle control
 void cm_spindle_off_immediate(void);

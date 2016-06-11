@@ -82,8 +82,8 @@ namespace Motate {
     pin_number kSocket1_StepPinNumber           =   2;
     pin_number kSocket1_DirPinNumber            =   5;
     pin_number kSocket1_EnablePinNumber         =  22;
-    pin_number kSocket1_Microstep_0PinNumber    =  23;
-    pin_number kSocket1_Microstep_1PinNumber    =  24;
+    pin_number kSocket1_Microstep_0PinNumber    =  -1;//23;
+    pin_number kSocket1_Microstep_1PinNumber    =  -1;//24;
     pin_number kSocket1_Microstep_2PinNumber    =  -1;
     pin_number kSocket1_VrefPinNumber           =  -1;//34; //PWMTimer<0>
 
@@ -92,8 +92,8 @@ namespace Motate {
     pin_number kSocket2_StepPinNumber           =   3;
     pin_number kSocket2_DirPinNumber            =   6;
     pin_number kSocket2_EnablePinNumber         =  25;
-    pin_number kSocket2_Microstep_0PinNumber    =  26;
-    pin_number kSocket2_Microstep_1PinNumber    =  27;
+    pin_number kSocket2_Microstep_0PinNumber    =  -1;//26;
+    pin_number kSocket2_Microstep_1PinNumber    =  -1;//27;
     pin_number kSocket2_Microstep_2PinNumber    =  -1;
     pin_number kSocket2_VrefPinNumber           =  -1;//62; //PWMTimer<1>
 
@@ -102,8 +102,8 @@ namespace Motate {
     pin_number kSocket3_StepPinNumber           =   4;
     pin_number kSocket3_DirPinNumber            =   7;
     pin_number kSocket3_EnablePinNumber         =  28;
-    pin_number kSocket3_Microstep_0PinNumber    =  29;
-    pin_number kSocket3_Microstep_1PinNumber    =  30;
+    pin_number kSocket3_Microstep_0PinNumber    =  -1;//29;
+    pin_number kSocket3_Microstep_1PinNumber    =  -1;//30;
     pin_number kSocket3_Microstep_2PinNumber    =  -1;
     pin_number kSocket3_VrefPinNumber           =  -1;//63; //PWMTimer<2>
 
@@ -112,8 +112,8 @@ namespace Motate {
     pin_number kSocket4_StepPinNumber           =  31;
     pin_number kSocket4_DirPinNumber            =  32;
     pin_number kSocket4_EnablePinNumber         =  33;
-    pin_number kSocket4_Microstep_0PinNumber    =  35;
-    pin_number kSocket4_Microstep_1PinNumber    =  36;
+    pin_number kSocket4_Microstep_0PinNumber    =  -1;//35;
+    pin_number kSocket4_Microstep_1PinNumber    =  -1;//36;
     pin_number kSocket4_Microstep_2PinNumber    =  -1;
     pin_number kSocket4_VrefPinNumber           =  -1;//64; //PWMTimer<3>
 
@@ -122,8 +122,8 @@ namespace Motate {
     pin_number kSocket5_StepPinNumber           =  37;
     pin_number kSocket5_DirPinNumber            =  38;
     pin_number kSocket5_EnablePinNumber         =  39;
-    pin_number kSocket5_Microstep_0PinNumber    =  40;
-    pin_number kSocket5_Microstep_1PinNumber    =  41;
+    pin_number kSocket5_Microstep_0PinNumber    =  -1;//40;
+    pin_number kSocket5_Microstep_1PinNumber    =  -1;//41;
     pin_number kSocket5_Microstep_2PinNumber    =  -1;
     pin_number kSocket5_VrefPinNumber           =  -1;//66; //PWMTimer<3>
 
@@ -133,27 +133,27 @@ namespace Motate {
     pin_number kSocket6_DirPinNumber            =  43;
     pin_number kSocket6_EnablePinNumber         =  44;
     pin_number kSocket6_Microstep_0PinNumber    =  -1;//45;
-    pin_number kSocket6_Microstep_1PinNumber    =  46;
+    pin_number kSocket6_Microstep_1PinNumber    =  -1;//46;
     pin_number kSocket6_Microstep_2PinNumber    =  -1;
     pin_number kSocket6_VrefPinNumber           =  -1;//67; //PWMTimer<0>
 
 
-    pin_number kInput1_PinNumber              =  14;
-    pin_number kInput2_PinNumber              =  15;
-    pin_number kInput3_PinNumber              =  16;
-    pin_number kInput4_PinNumber              =  17;
-    pin_number kInput5_PinNumber              =  18;
-    pin_number kInput6_PinNumber              =  19;
+    pin_number kInput1_PinNumber              =  14;      // Xmin
+    pin_number kInput2_PinNumber              =  15;// Xmax
+    pin_number kInput3_PinNumber              =  16;// Ymin
+    pin_number kInput4_PinNumber              =  17;// Ymax
+    pin_number kInput5_PinNumber              =  18;// Zmin
+    pin_number kInput6_PinNumber              =  19;// Zmax
 
-    pin_number kInput7_PinNumber              =  58;
-    pin_number kInput8_PinNumber              =  59;
-    pin_number kInput9_PinNumber              =  60;
+    pin_number kInput7_PinNumber              =  58;// Amin
+    pin_number kInput8_PinNumber              =  59;// Amax
+    pin_number kInput9_PinNumber              =  60;// Hardware interlock input
     pin_number kInput10_PinNumber              =  61;
-    pin_number kInput11_PinNumber              =  65;
+    pin_number kInput11_PinNumber              =  66;
     pin_number kInput12_PinNumber              =  51;
 
     pin_number kSpindle_EnablePinNumber         =  12;
-    pin_number kSpindle_DirPinNumber            =  -1;//13;
+    pin_number kSpindle_DirPinNumber            =  13;
     pin_number kSpindle_PwmPinNumber            =  11;
     pin_number kSpindle_Pwm2PinNumber           =   9;
     pin_number kCoolant_EnablePinNumber         =  57;

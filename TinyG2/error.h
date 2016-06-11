@@ -361,8 +361,9 @@ char *get_status_message(stat_t status);
 #define	STAT_PROBE_CYCLE_FAILED 250						// probing cycle did not complete
 #define STAT_PROBE_ENDPOINT_IS_STARTING_POINT 251
 #define	STAT_JOGGING_CYCLE_FAILED 252					// jogging cycle did not complete
+
+#define	Interlock_DIsengaged 253
 /*
-#define	STAT_ERROR_253 253
 #define	STAT_ERROR_254 254
 #define	STAT_ERROR_255 255
 */
@@ -649,6 +650,7 @@ static const char stat_249[] PROGMEM = "249";
 static const char stat_250[] PROGMEM = "Probe cycle failed";
 static const char stat_251[] PROGMEM = "Probe endpoint is starting point";
 static const char stat_252[] PROGMEM = "Jogging cycle failed";
+static const char stat_253[] PROGMEM = "Safety interlock engaged";
 
 static const char *const stat_msg[] PROGMEM = {
     stat_00, stat_01, stat_02, stat_03, stat_04, stat_05, stat_06, stat_07, stat_08, stat_09,
@@ -676,7 +678,7 @@ static const char *const stat_msg[] PROGMEM = {
     stat_220, stat_221, stat_222, stat_223, stat_224, stat_225, stat_226, stat_227, stat_228, stat_229,
     stat_230, stat_231, stat_232, stat_233, stat_234, stat_235, stat_236, stat_237, stat_238, stat_239,
     stat_240, stat_241, stat_242, stat_243, stat_244, stat_245, stat_246, stat_247, stat_248, stat_249,
-    stat_250, stat_251, stat_252
+    stat_250, stat_251, stat_252, stat_253
 };
 
 #endif // End of include guard: ERROR_H_ONCE

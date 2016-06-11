@@ -702,6 +702,8 @@ bool cm_has_hold(void);
 void cm_start_hold(void);
 void cm_end_hold(void);
 
+void stat_out_leds(void);		//outputs cycle start signal/ feedhold signal for user indication.   
+
 void cm_queue_flush(void);									    // flush serial and planner queues with coordinate resets
 void cm_end_queue_flush(void);
 

@@ -45,7 +45,6 @@ cmSpindleton_t spindle;
 static void _exec_spindle_speed(float *value, bool *flag);
 static void _exec_spindle_control(float *value, bool *flag);
 static float _get_spindle_pwm (cmSpindleEnable enable, cmSpindleDir direction);
-
 /*
  * spindle_init()
  * spindle_reset() - stop spindle, set speed to zero, and reset values
@@ -186,14 +185,19 @@ static void _exec_spindle_control(float *value, bool *flag)
         // set on/off. Mask out PAUSE and consider it OFF
         spindle.enable = (cmSpindleEnable)value[0];             // record spindle enable in the struct
         if ((spindle.enable & 0x01) ^ spindle.enable_polarity) {
-            _set_spindle_enable_bit_lo();
+           // _set_spindle_enable_bit_lo();
+            spindle_enable_pin.clear();
         } else {
-            _set_spindle_enable_bit_hi();
+            //_set_spindle_enable_bit_hi();
+            spindle_enable_pin.set();
         }
     }
 
     pwm_set_duty(PWM_1, _get_spindle_pwm(spindle.enable, spindle.direction));
 }
+
+
+
 
 /*
  * _get_spindle_pwm() - return PWM phase (duty cycle) for dir and speed

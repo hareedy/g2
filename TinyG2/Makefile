@@ -57,7 +57,7 @@ DEBUG ?= 0
 #DEBUG ?= 2 # Use this for DEBUG=1 + some debug traps that need a HW debugger
 
 # SETTINGS_FILE may get overriden by the PLATFORM setings below
-SETTINGS_FILE ?= settings_default.h
+#SETTINGS_FILE ?= settings_default.h
 
 CFLAGS   :=
 CPPFLAGS :=

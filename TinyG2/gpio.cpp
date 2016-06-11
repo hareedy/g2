@@ -120,13 +120,15 @@ void gpio_init(void)
     input_6_pin.setInterrupts(kPinInterruptOnChange|kPinInterruptPriorityMedium);
     input_7_pin.setInterrupts(kPinInterruptOnChange|kPinInterruptPriorityMedium);
     input_8_pin.setInterrupts(kPinInterruptOnChange|kPinInterruptPriorityMedium);
-/*
+
     input_9_pin.setInterrupts(kPinInterruptOnChange|kPinInterruptPriorityMedium);
     input_10_pin.setInterrupts(kPinInterruptOnChange|kPinInterruptPriorityMedium);
     input_11_pin.setInterrupts(kPinInterruptOnChange|kPinInterruptPriorityMedium);
+/*
     input_12_pin.setInterrupts(kPinInterruptOnChange|kPinInterruptPriorityMedium);
 */
 	return(gpio_reset());
+		
 }
 
 void gpio_reset(void)
@@ -136,12 +138,27 @@ void gpio_reset(void)
             io.in[i].state = INPUT_DISABLED;
             continue;
         }
-        int8_t pin_value_corrected = (_read_input_pin(i+1) ^ (io.in[i].mode ^ 1));	// correct for NO or NC mode
-		io.in[i].state = pin_value_corrected;
+        //int8_t pin_value_corrected = (_read_input_pin(i+1) ^ (io.in[i].mode ^ 1));	// correct for NO or NC mode
+		io.in[i].state = _read_input_pin(i+1);
         io.in[i].lockout_ms = INPUT_LOCKOUT_MS;
 		io.in[i].lockout_timer = SysTickTimer.getValue();
 	}
 }
+
+
+bool scan_lims(void)				
+{
+    bool pin_val_rec=0;
+    for (uint8_t ixz=0; ixz < DI_CHANNELS; ixz++) {
+    	if (io.in[ixz].mode == INPUT_MODE_DISABLED || io.in[ixz].function != INPUT_FUNCTION_LIMIT) {
+            continue;
+	}   
+    	pin_val_rec = pin_val_rec | _read_input_pin(ixz+1);
+    }
+    return(pin_val_rec);
+
+}
+
 
 /*
  * gpio_set_homing_mode()   - set/clear input to homing mode
@@ -189,10 +206,11 @@ MOTATE_PIN_INTERRUPT(kInput5_PinNumber) { _handle_pin_changed(5, (input_5_pin.ge
 MOTATE_PIN_INTERRUPT(kInput6_PinNumber) { _handle_pin_changed(6, (input_6_pin.get() != 0)); }
 MOTATE_PIN_INTERRUPT(kInput7_PinNumber) { _handle_pin_changed(7, (input_7_pin.get() != 0)); }
 MOTATE_PIN_INTERRUPT(kInput8_PinNumber) { _handle_pin_changed(8, (input_8_pin.get() != 0)); }
-/*
+
 MOTATE_PIN_INTERRUPT(kInput9_PinNumber) { _handle_pin_changed(9, (input_9_pin.get() != 0)); }
-MOTATE_PIN_INTERRUPT(kInput10_PinNumber) { _handle_pin_changed(9, (input_10_pin.get() != 0)); }
-MOTATE_PIN_INTERRUPT(kInput11_PinNumber) { _handle_pin_changed(10, (input_11_pin.get() != 0)); }
+MOTATE_PIN_INTERRUPT(kInput10_PinNumber) { _handle_pin_changed(10, (input_10_pin.get() != 0)); }
+MOTATE_PIN_INTERRUPT(kInput11_PinNumber) { _handle_pin_changed(11, (input_11_pin.get() != 0)); }
+/*
 MOTATE_PIN_INTERRUPT(kInput12_PinNumber) { _handle_pin_changed(11, (input_12_pin.get() != 0)); }
 */
 
@@ -225,16 +243,16 @@ void static _handle_pin_changed(const uint8_t input_num_ext, const int8_t pin_va
     }
 
 	// return if no change in state
-	int8_t pin_value_corrected = (pin_value ^ ((int)in->mode ^ 1));	// correct for NO or NC mode
-	if ( in->state == pin_value_corrected ) {
+	//int8_t pin_value_corrected = (pin_value ^ ((int)in->mode ^ 1));	// correct for NO or NC mode
+	if ( in->state == pin_value ) {
 //    	in->edge = INPUT_EDGE_NONE;        // edge should only be reset by function or opposite edge
     	return;
 	}
 
 	// record the changed state
-    in->state = pin_value_corrected;
+    in->state = pin_value;
 	in->lockout_timer = SysTickTimer.getValue() + in->lockout_ms;
-    if (pin_value_corrected == INPUT_ACTIVE) {
+    if (pin_value == INPUT_ACTIVE) {
         in->edge = INPUT_EDGE_LEADING;
     } else {
         in->edge = INPUT_EDGE_TRAILING;
@@ -292,7 +310,16 @@ void static _handle_pin_changed(const uint8_t input_num_ext, const int8_t pin_va
 
 		} else if (in->function == INPUT_FUNCTION_INTERLOCK) {
 		    cm.safety_interlock_disengaged = input_num_ext;
+		} else if (in->function == INPUT_FUNCTION_CONTROL){
+			if(in->action == INPUT_ACTION_HWRESUME){
+				cm_request_end_hold();
+		  	}
+		  	else {
+		  		cm_request_feedhold();
+		  	}
+		  	
 		}
+		
     }
 
     // trigger interlock release on trailing edge

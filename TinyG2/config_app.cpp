@@ -380,6 +380,13 @@ const cfgItem_t cfgArray[] PROGMEM = {
 	{ "di9","di9mo",_fip, 0, io_print_mo, get_int8,io_set_mo, (float *)&io.in[8].mode,     DI9_MODE },
 	{ "di9","di9ac",_fip, 0, io_print_ac, get_ui8, io_set_ac, (float *)&io.in[8].action,   DI9_ACTION },
 	{ "di9","di9fn",_fip, 0, io_print_fn, get_ui8, io_set_fn, (float *)&io.in[8].function, DI9_FUNCTION },
+	
+	{ "di10","di10mo",_fip, 0, io_print_mo, get_int8,io_set_mo, (float *)&io.in[9].mode,     DI10_MODE },
+	{ "di10","di10ac",_fip, 0, io_print_ac, get_ui8, io_set_ac, (float *)&io.in[9].action,   DI10_ACTION },
+	{ "di10","di10fn",_fip, 0, io_print_fn, get_ui8, io_set_fn, (float *)&io.in[9].function, DI10_FUNCTION },
+	{ "di11","di11mo",_fip, 0, io_print_mo, get_int8,io_set_mo, (float *)&io.in[10].mode,     DI11_MODE },
+	{ "di11","di11ac",_fip, 0, io_print_ac, get_ui8, io_set_ac, (float *)&io.in[10].action,   DI11_ACTION },
+	{ "di11","di11fn",_fip, 0, io_print_fn, get_ui8, io_set_fn, (float *)&io.in[10].function, DI11_FUNCTION },
 
     // Digital input state readers
 	{ "in","in1", _f0, 0, io_print_in, io_get_input, set_nul, (float *)&cs.null, 0 },
@@ -391,6 +398,8 @@ const cfgItem_t cfgArray[] PROGMEM = {
 	{ "in","in7", _f0, 0, io_print_in, io_get_input, set_nul, (float *)&cs.null, 0 },
 	{ "in","in8", _f0, 0, io_print_in, io_get_input, set_nul, (float *)&cs.null, 0 },
 	{ "in","in9", _f0, 0, io_print_in, io_get_input, set_nul, (float *)&cs.null, 0 },
+	{ "in","in10", _f0, 0, io_print_in, io_get_input, set_nul, (float *)&cs.null, 0 },
+	{ "in","in11", _f0, 0, io_print_in, io_get_input, set_nul, (float *)&cs.null, 0 },
 
 	// PWM settings
 	{ "p1","p1frq",_fip, 0, pwm_print_p1frq, get_flt, pwm_set_pwm,(float *)&pwm.c[PWM_1].frequency,    P1_PWM_FREQUENCY },
@@ -732,6 +741,9 @@ const cfgItem_t cfgArray[] PROGMEM = {
 	{ "","di7", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
 	{ "","di8", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
 	{ "","di9", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
+	{ "","di10", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
+	{ "","di11", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
+	
 
 	{ "","g54",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },	// coord offset groups
 	{ "","g55",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
@@ -935,7 +947,7 @@ static stat_t _do_offsets(nvObj_t *nv)	// print offset parameters for G54-G59,G9
 
 static stat_t _do_inputs(nvObj_t *nv)	// print parameters for all input groups
 {
-	char list[][TOKEN_LEN+1] = {"di1","di2","di3","di4","di5","di6","di7","di8","di9",""}; // must have a terminating element
+	char list[][TOKEN_LEN+1] = {"di1","di2","di3","di4","di5","di6","di7","di8","di9","di10","di11",""}; // must have a terminating element
 	return (_do_group_list(nv, list));
     return (STAT_OK);
 }

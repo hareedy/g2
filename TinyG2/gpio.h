@@ -33,7 +33,7 @@
  */
 //--- change as required for board and switch hardware ---//
 
-#define DI_CHANNELS	        9       // number of digital inputs supported
+#define DI_CHANNELS	        11       // number of digital inputs supported
 #define DO_CHANNELS	        4       // number of digital outputs supported
 #define AI_CHANNELS	        0       // number of analog inputs supported
 #define AO_CHANNELS	        0       // number of analog outputs supported
@@ -58,6 +58,8 @@ typedef enum {                      // actions are initiated from within the inp
     INPUT_ACTION_HALT,              // stop immediately - not guaranteed to preserve position
     INPUT_ACTION_PANIC,             // initiate a panic. stops everything immediately - does not preserve position
     INPUT_ACTION_RESET,             // reset system
+    INPUT_ACTION_HWHOLD,
+    INPUT_ACTION_HWRESUME,
 	INPUT_ACTION_MAX                // unused. Just for range checking
 } inputAction;
 
@@ -66,7 +68,7 @@ typedef enum {                      // functions are requested from the ISR, run
     INPUT_FUNCTION_LIMIT,           // limit switch processing
     INPUT_FUNCTION_INTERLOCK,       // interlock processing
     INPUT_FUNCTION_SHUTDOWN,        // shutdown in support of external emergency stop
-//    INPUT_FUNCTION_SPINDLE_READY,   // signal that spindle is ready (up to speed)
+	INPUT_FUNCTION_CONTROL,   // signal that spindle is ready (up to speed)
 	INPUT_FUNCTION_MAX              // unused. Just for range checking
 } inputFunc;
 
@@ -122,10 +124,10 @@ extern io_t io;
 /*
  * GPIO function prototypes
  */
-
+bool _read_input_pin(const uint8_t input_num_ext);
 void gpio_init(void);
 void gpio_reset(void);
-
+bool scan_lims(void);
 bool gpio_read_input(const uint8_t input_num);
 void gpio_set_homing_mode(const uint8_t input_num, const bool is_homing);
 void gpio_set_probing_mode(const uint8_t input_num, const bool is_probing);

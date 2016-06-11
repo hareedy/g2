@@ -126,6 +126,7 @@ static void _exec_program_finalize(float *value, bool *flag);
 static int8_t _get_axis(const index_t index);
 static int8_t _get_axis_type(const index_t index);
 
+
 /***********************************************************************************
  **** CODE *************************************************************************
  ***********************************************************************************/
@@ -592,7 +593,14 @@ void canonical_machine_reset()
 	// reset request flags
 	cm.queue_flush_state = FLUSH_OFF;
 	cm.end_hold_requested = false;
-    cm.limit_requested = 0;                 // resets switch closures that occurred during initialization
+	
+	if (scan_lims() == 1){
+		cm.limit_requested = 1;
+	}
+	else{
+		cm.limit_requested = 0;                 // resets switch closures that occurred during initialization
+	}
+
     cm.safety_interlock_disengaged = 0;     // ditto
     cm.safety_interlock_reengaged = 0;      // ditto
     cm.shutdown_requested = 0;              // ditto
@@ -677,14 +685,18 @@ stat_t cm_clr(nvObj_t *nv)                // clear alarm or shutdown from comman
  * Parse clear interprets an M30 or M2 PROGRAM_END as a $clear condition and clear ALARM
  * but not SHUTDOWN or PANIC. Assumes Gcode string has no leading or embedded whitespace
  */
+ 
 
 void cm_clear()
-{
-    if (cm.machine_state == MACHINE_ALARM) {
-        cm.machine_state = MACHINE_PROGRAM_STOP;
-    } else if (cm.machine_state == MACHINE_SHUTDOWN) {
-        cm.machine_state = MACHINE_READY;
-    }
+{ 
+	scan_lims();
+	if (scan_lims() == 0){
+		if (cm.machine_state == MACHINE_ALARM ) {
+			cm.machine_state = MACHINE_PROGRAM_STOP;
+		} else if (cm.machine_state == MACHINE_SHUTDOWN) {
+			cm.machine_state = MACHINE_READY;
+		}
+	}
 }
 
 void cm_parse_clear(const char *s)
@@ -1609,7 +1621,6 @@ void cm_queue_flush()
 static void _exec_program_finalize(float *value, bool *flag)
 {
 	cm_set_motion_state(MOTION_STOP);
-
 	// Allow update in the alarm state, to accommodate queue flush (RAS)
 	if ((cm.cycle_state == CYCLE_MACHINING || cm.cycle_state == CYCLE_OFF) /*&&
 	    (cm.machine_state != MACHINE_ALARM)*/ && (cm.machine_state != MACHINE_SHUTDOWN)) { // OMC
@@ -1663,6 +1674,7 @@ void cm_canned_cycle_end()
 	float value[] = { (float)MACHINE_PROGRAM_STOP, 0,0,0,0,0 };
     bool flags[]  = { 1,0,0,0,0,0 };
 	_exec_program_finalize(value, flags);
+
 }
 
 void cm_program_stop()
@@ -1684,6 +1696,22 @@ void cm_program_end()
 	float value[] = { (float)MACHINE_PROGRAM_END, 0,0,0,0,0 };
     bool flags[]  = { 1,0,0,0,0,0 };
 	mp_queue_command(_exec_program_finalize, value, flags);
+}
+
+void stat_out_leds(void)
+{
+	if (cm.hold_state == FEEDHOLD_HOLD){
+	feedhold_pin.set();
+	}
+	else{
+	feedhold_pin.clear();
+	}
+	if (cm.cycle_state == CYCLE_MACHINING){
+	cycle_start_pin.set();
+	}
+	else{
+	cycle_start_pin.clear();
+	}
 }
 
 /**************************************

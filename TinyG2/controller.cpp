@@ -137,6 +137,7 @@ void controller_run()
 {
 	while (true) {
 		_controller_HSM();
+		stat_out_leds();
 	}
 }
 
@@ -409,10 +410,12 @@ static stat_t _interlock_handler(void)
 {
     if (cm.safety_interlock_enable) {
     // interlock broken
+    char msg[10];
         if (cm.safety_interlock_disengaged != 0) {
             cm.safety_interlock_disengaged = 0;
             cm.safety_interlock_state = SAFETY_INTERLOCK_DISENGAGED;
             cm_request_feedhold();                                  // may have already requested STOP as INPUT_ACTION
+            cm_alarm(Interlock_DIsengaged, msg);
             // feedhold was initiated by input action in gpio
             // pause spindle
             // pause coolant
